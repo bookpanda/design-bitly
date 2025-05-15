@@ -18,4 +18,8 @@ public class RedisClient {
     public String getValue(String key) {
         return redisTemplate.opsForValue().get(key);
     }
+
+    public Long increment(String key) {
+        return redisTemplate.opsForValue().increment(key);
+    }
 }

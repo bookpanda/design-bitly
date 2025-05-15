@@ -5,22 +5,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UrlService {
+    private final UrlRepository urlRepository;
     private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private final String baseUrl;
 
-    public UrlService(@Value("${app.base-url}") String baseUrl) {
+    public UrlService(UrlRepository urlRepository, @Value("${app.base-url}") String baseUrl) {
+        this.urlRepository = urlRepository;
         this.baseUrl = baseUrl;
     }
 
     public String getRedirectUrl(String code) {
-        String originalUrl = "http://example.com/original-url";
-
+        String originalUrl = urlRepository.findOriginalUrlByCode(code);
         return originalUrl;
     }
 
     public String createShortUrl(String originalUrl) {
         int number = 10032;
         String base62 = toBase62(number);
+
+        urlRepository.saveUrlMapping(base62, originalUrl);
 
         return baseUrl + base62;
     }

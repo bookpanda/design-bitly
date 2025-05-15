@@ -1,23 +1,28 @@
 package com.bitly.url;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bitly.url.dto.CreateShortUrlRequest;
 import com.bitly.url.dto.CreateShortUrlResponse;
-import com.bitly.url.dto.GetRedirectUrlResponse;
 
 @RestController
 @RequestMapping("/urls")
 public class UrlController {
     @GetMapping
-    public GetRedirectUrlResponse getRedirectUrl(@RequestParam("short_code") String code) {
-        // For demo, just return the input URL as is (replace with actual logic)
-        return new GetRedirectUrlResponse("http://original.url/" + code);
+    public ResponseEntity<Void> getRedirectUrl(@RequestParam("short_code") String code) {
+        String originalUrl = "http://original.url/" + code;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(java.net.URI.create(originalUrl));
+
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
     @PostMapping

@@ -7,7 +7,10 @@ gradle bootRun
 
 # watch
 gradle wrapper
+
 ./gradlew bootRun --continuous
+# in the other terminal
+./gradlew build --continuous
 
 # create a jar file
 gradle bootJar

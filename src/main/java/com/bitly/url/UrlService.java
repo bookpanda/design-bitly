@@ -1,10 +1,16 @@
 package com.bitly.url;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UrlService {
     private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private final String baseUrl;
+
+    public UrlService(@Value("${app.base-url}") String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
     public String getRedirectUrl(String code) {
         String originalUrl = "http://example.com/original-url";
@@ -16,7 +22,7 @@ public class UrlService {
         int number = 10032;
         String base62 = toBase62(number);
 
-        return "http://localhost:8080/urls/" + base62;
+        return baseUrl + base62;
     }
 
     private String toBase62(int number) {

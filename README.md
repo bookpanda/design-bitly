@@ -5,6 +5,10 @@ gradle dependencies
 gradle build
 gradle bootRun
 
+# watch
+gradle wrapper
+./gradlew bootRun --continuous
+
 # create a jar file
 gradle bootJar
 # list the contents of the jar file

@@ -4,10 +4,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bitly.url.dto.CreateShortUrlRequest;
 import com.bitly.url.dto.CreateShortUrlResponse;
@@ -15,9 +15,15 @@ import com.bitly.url.dto.CreateShortUrlResponse;
 @RestController
 @RequestMapping("/urls")
 public class UrlController {
-    @GetMapping
-    public ResponseEntity<Void> getRedirectUrl(@RequestParam("short_code") String code) {
-        String originalUrl = "http://original.url/" + code;
+    private final UrlService urlService;
+
+    public UrlController(UrlService urlService) {
+        this.urlService = urlService;
+    }
+
+    @GetMapping("/{short_code}")
+    public ResponseEntity<Void> getRedirectUrl(@PathVariable("short_code") String code) {
+        String originalUrl = urlService.getRedirectUrl(code);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(java.net.URI.create(originalUrl));
@@ -27,9 +33,8 @@ public class UrlController {
 
     @PostMapping
     public CreateShortUrlResponse createShortUrl(@RequestBody CreateShortUrlRequest request) {
-        String originalUrl = request.getOriginalUrl();
-        // For demo, just return a fake shortened URL (replace with your logic)
-        String shortUrl = "http://short.url/" + originalUrl.hashCode();
+        String shortUrl = urlService.createShortUrl(request.getOriginalUrl());
+
         return new CreateShortUrlResponse(shortUrl);
     }
 }

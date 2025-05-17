@@ -1,5 +1,7 @@
 package com.bitly.url;
 
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,19 +16,32 @@ public class UrlService {
 
     private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String COUNTER_KEY = "url_counter";
+
+    private final Duration cacheTTLSeconds;
     private final String baseUrl;
 
-    public UrlService(UrlRepository urlRepository, RedisClient redisClient, @Value("${app.base-url}") String baseUrl) {
+    public UrlService(UrlRepository urlRepository, RedisClient redisClient,
+            @Value("${app.cache-ttl-seconds}") int cacheTTLSeconds, @Value("${app.base-url}") String baseUrl) {
         this.urlRepository = urlRepository;
         this.redisClient = redisClient;
+        this.cacheTTLSeconds = Duration.ofSeconds(cacheTTLSeconds);
         this.baseUrl = baseUrl;
     }
 
     public String getRedirectUrl(String code) {
+        String key = String.format("code:%s", code);
+        String cachedUrl = redisClient.getValue(key);
+        if (cachedUrl != null) {
+            return cachedUrl;
+        }
+
         String originalUrl = urlRepository.findOriginalUrlByCode(code);
         if (originalUrl == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL not found");
         }
+
+        // cache the result
+        redisClient.setValue(key, originalUrl, cacheTTLSeconds);
 
         return originalUrl;
     }

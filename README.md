@@ -26,4 +26,14 @@ java -jar build/libs/bitly-0.0.1-SNAPSHOT.jar
 - unique counter with Base62 encoding
 - uses Redis to store the counter
     - if we used database INCREMENT, it would be 2 trips to db (1 to get counter, 1 to add row), rather than 1 redis trip, 1 db trip
-    - if redis is down, we can failover to another redis instance (sentinel) or restore counter value from db
+    - if redis is down, we can failover to another [redis instance (sentinel)](https://github.com/bookpanda/deepdive-redis) or restore counter value from db
+
+## How can we ensure that redirects are fast?
+### Solution
+- use a cache (Redis) to store the mapping of short urls to long urls
+- use CDNs, but might be a bit overkill for this use case
+
+## How can we scale to support 1B shortened urls and 100M DAU?
+- a row in database: short_code ()
+### Solution
+- 

@@ -1,4 +1,6 @@
 # design-bitly
+Imeplementing a URL shortener like bitly, referencing design from [Hello Interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/bitly)
+
 ## Commands
 ```bash
 gradle dependencies

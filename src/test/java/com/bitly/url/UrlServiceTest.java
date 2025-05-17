@@ -14,12 +14,13 @@ public class UrlServiceTest {
     private UrlService urlService;
 
     private final String BASE_URL = "http://localhost/";
+    private final int CACHE_TTL_SECONDS = 60;
 
     @BeforeEach
     void setUp() {
         urlRepository = mock(UrlRepository.class);
         redisClient = mock(RedisClient.class);
-        urlService = new UrlService(urlRepository, redisClient, BASE_URL);
+        urlService = new UrlService(urlRepository, redisClient, CACHE_TTL_SECONDS, BASE_URL);
     }
 
     @Test

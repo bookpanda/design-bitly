@@ -30,10 +30,21 @@ public class UrlServiceTest {
         when(redisClient.increment("url_counter")).thenReturn(fakeCounter);
 
         String expectedCode = "1z"; // 123 in base62
-        String result = urlService.createShortUrl(originalUrl);
+        String result = urlService.createShortUrl(originalUrl, null);
 
         assertEquals(BASE_URL + expectedCode, result);
         verify(urlRepository).saveUrlMapping(expectedCode, originalUrl);
+    }
+
+    @Test
+    void testCreateShortUrlWithCustomCode() {
+        String originalUrl = "https://example.com";
+        String customCode = "custom123";
+
+        String result = urlService.createShortUrl(originalUrl, customCode);
+
+        assertEquals(BASE_URL + customCode, result);
+        verify(urlRepository).saveUrlMapping(customCode, originalUrl);
     }
 
     @Test

@@ -29,7 +29,7 @@ public class UrlControllerTest {
 
     @Test
     void testCreateShortUrl() throws Exception {
-        when(urlService.createShortUrl("https://example.com")).thenReturn("http://localhost/xyz");
+        when(urlService.createShortUrl("https://example.com", null)).thenReturn("http://localhost/xyz");
 
         String jsonBody = """
                     {

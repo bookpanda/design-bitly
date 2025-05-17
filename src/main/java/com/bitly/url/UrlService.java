@@ -31,7 +31,17 @@ public class UrlService {
         return originalUrl;
     }
 
-    public String createShortUrl(String originalUrl) {
+    public String createShortUrl(String originalUrl, String customCode) {
+        if (customCode != null) {
+            String existingUrl = urlRepository.findOriginalUrlByCode(customCode);
+            if (existingUrl != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Code already exists, please choose another");
+            }
+
+            urlRepository.saveUrlMapping(customCode, originalUrl);
+            return baseUrl + customCode;
+        }
+
         Long number = redisClient.increment(COUNTER_KEY);
         String base62 = toBase62(number.intValue());
 

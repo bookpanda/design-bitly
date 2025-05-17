@@ -33,7 +33,7 @@ public class UrlController {
 
     @PostMapping
     public CreateShortUrlResponse createShortUrl(@RequestBody CreateShortUrlRequest request) {
-        String shortUrl = urlService.createShortUrl(request.getOriginalUrl());
+        String shortUrl = urlService.createShortUrl(request.getOriginalUrl(), request.getCustomCode());
 
         return new CreateShortUrlResponse(shortUrl);
     }

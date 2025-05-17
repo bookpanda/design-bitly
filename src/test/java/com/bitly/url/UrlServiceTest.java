@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UrlServiceTest {
-
     private UrlRepository urlRepository;
     private RedisClient redisClient;
     private UrlService urlService;

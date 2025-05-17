@@ -7,7 +7,12 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.bitly'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '21'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
 	mavenCentral()
@@ -26,4 +31,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core'
 	testImplementation 'com.h2database:h2:2.2.224'
+}
+
+test {
+    useJUnitPlatform()
 }

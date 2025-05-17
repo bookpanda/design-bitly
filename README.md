@@ -18,6 +18,11 @@ gradle bootJar
 jar tvf build/libs/bitly-0.0.1-SNAPSHOT.jar
 # run the jar file
 java -jar build/libs/bitly-0.0.1-SNAPSHOT.jar
+
+# testing
+./gradlew test
+./gradlew test --info
+./gradlew test --debug
 ```
 
 # Deep Dives

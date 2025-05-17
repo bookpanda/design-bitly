@@ -3,11 +3,13 @@ package com.bitly.url;
 import com.bitly.data.RedisClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class UrlServiceTest {
     private UrlRepository urlRepository;
     private RedisClient redisClient;

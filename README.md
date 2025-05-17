@@ -23,6 +23,8 @@ java -jar build/libs/bitly-0.0.1-SNAPSHOT.jar
 ./gradlew test
 ./gradlew test --info
 ./gradlew test --debug
+./gradlew clean test
+./gradlew test --tests "com.bitly.url.UrlServiceTest"
 ```
 
 # Deep Dives
